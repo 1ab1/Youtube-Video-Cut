@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    </head>
+    <body>
+        <form action="/video" method="post">
+            <div class="form-group">
+    <input type="text" class="form-control" name="video_id" aria-describedby="emailHelp" placeholder="Youtube Video Id">
+  </div>
+  <div class="form-group">
+    <input type="text" class="form-control" name="video_name" placeholder="Video name">
+  </div>
+            <div class="form-group">
+      <textarea class="form-control" rows="5" id="comment" name="intervals" placeholder="Intervals sepearated by new line"></textarea>
+    </div>
+            <!--
+  <div class="form-group">
+    <input type="text" class="form-control" name="intervals1" placeholder="Intervals">
+  </div>
+            --!>
+  <button type="submit" class="btn btn-primary" >Submit</button>
+</form>
+    </body>
+</html>
