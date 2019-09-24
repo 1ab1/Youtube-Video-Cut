@@ -107,6 +107,7 @@ def editor(video_id, video_name, intervals1):
 
 
 '''
+invalid youtube video url
 hanlde file names ...if users provide sanme video name simultaneously
 '''
 

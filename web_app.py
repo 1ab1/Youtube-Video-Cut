@@ -17,7 +17,7 @@ def cut_and_join():
 def cut_and_join2():
     data = request.form
     print data
-    id = data['video_id']
+    id = data['video_id'].split('?v=')[1].split('&')[0]
     name = data['video_name']
     intervals = data['intervals']
     print id, name, intervals
@@ -25,4 +25,4 @@ def cut_and_join2():
     return send_file('./{}.mp4'.format(name.replace(' ', '_')), as_attachment=True)
 
 if __name__=='__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=5000)
