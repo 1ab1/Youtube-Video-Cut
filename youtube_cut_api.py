@@ -19,6 +19,24 @@ def time_to_secs(time):
         return int(arr[0])*3600+int(arr[1])*60+int(arr[2])
 
 
+def refine_inervs(intervals):
+    final_intervals = []
+    for interval in intervals:
+        arr = []
+        start = int(interval[0])
+        end = int(interval[1])
+        print start, end
+        while end - start > 600:
+            arr.append(str(start))
+            arr.append(str(start+600))
+            final_intervals.append(arr)
+            start = start + 600
+            arr = []
+        arr.append(str(start))
+        arr.append(str(end))
+        final_intervals.append(arr)
+    return final_intervals
+
 def combine(videos_names_file, video_name):
     subprocess.call("ffmpeg -f concat -i {} -vcodec copy -acodec copy {}".format(videos_names_file, video_name), shell=True)
     '''
@@ -84,6 +102,8 @@ def editor(video_id, video_name, intervals1):
                     else:
                         interval.append(str(i.strip()))
             intervals.append(interval)
+    print intervals
+    intervals = refine_inervs(intervals)
     print intervals
     video_name = video_name.replace(' ', '_') + '_time_{}'.format(secs)
     videos_names_file_name = video_name + '.txt'
