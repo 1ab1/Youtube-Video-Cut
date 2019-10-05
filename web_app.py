@@ -17,7 +17,7 @@ def cut_and_join():
 def cut_and_join2():
     data = request.form
     print data
-    id = data['video_id'].split('?v=')[1].split('&')[0]
+    id = data['video_id'].split('v=')[1].split('&')[0]
     name = data['video_name']
     intervals = data['intervals']
     print id, name, intervals

@@ -9,6 +9,7 @@ import subprocess
 import datetime
 import time
 import os
+from multiprocessing.pool import ThreadPool
 
 
 def time_to_secs(time):
@@ -85,11 +86,14 @@ def cut(id, start, end, video_name):
         print(e)
         cut(id, start, end, video_name)
 
+def helper(args):
+    return cut(*args)
 
 def editor(video_id, video_name, intervals1):
     video_id = video_id
     secs = str(time.time()).split('.')[0]
     intervals = []
+    params = []
     intervals_file = 'intervals_{}.txt'.format(secs)
     open(intervals_file, 'wb+').write(intervals1)
     for line in open(intervals_file, 'r').readlines():
@@ -115,9 +119,18 @@ def editor(video_id, video_name, intervals1):
         cut(video_id, intervals[0][0],  intervals[0][1], video_name + ".mp4")
     else:
         for i in intervals:
-            cut(video_id, i[0], i[1], video_name + "_" + str(count) + ".mp4")
+            param = ()
+            param += (video_id, )
+            param += (i[0], )
+            param += (i[1], )
+            param += (video_name + "_" + str(count) + ".mp4",)
+            params.append(param)
             open(videos_names_file_name, 'a+').write("file {}\n".format(video_name + "_" + str(count) + ".mp4"))
             count = count + 1
+        print params
+        results = ThreadPool(len(params)).map(helper, params)
+        for result in results:
+            print 'file downloaded'
         combine(videos_names_file_name, video_name + '.mp4')
     os.rename(video_name + '.mp4', video_name.split('_time_')[0] + '.mp4')
     #subprocess.call('rm *.txt;rm *.mp4', shell=True)
@@ -127,13 +140,14 @@ def editor(video_id, video_name, intervals1):
 
 
 '''
-invalid youtube video url
+invalid youtube vvideo url
 hanlde file names ...if users provide sanme video name simultaneously
 '''
 
 #ffmpeg -f concat -i video_files_names.txt -vcodec copy -acodec copy combined.mp4
 
 '''
+url parsing fialing here -> https://www.youtube.com/watch?time_continue=3490&v=Y_51wKtAnWI
 s=u'"/tmp/నాకు నరకం చూపించడానికి కృష్ణ వంశీ పుట్టాడు-Actor Sivaji Raja _ Frankly With TNR _ iDream Filmnagar 60s - 2m60s (9shf0TkZZOY).mp4"'
 print s.encode('utf-8')
 print urllib.quote(s.decode('utf-8'), safe='')
